@@ -124,7 +124,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         """Побудова меню"""
         mb = self.menuBar()
         m_menu = mb.addMenu("Меню")
-        m_daily = mb.addMenu("Звіти")
+        #m_daily = mb.addMenu("Звіти")
         m_help = mb.addMenu("Допомога")
 
         act_add = QtGui.QAction("Додати клієнта", self)
@@ -159,6 +159,8 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         w = QtWidgets.QWidget()
         self.setCentralWidget(w)
         lay = QtWidgets.QVBoxLayout(w)
+        lay.setSpacing(8)
+        lay.setContentsMargins(8, 8, 8, 8)
 
         # Верхня панель
         top_panel = QtWidgets.QHBoxLayout()

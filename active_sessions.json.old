@@ -1,55 +1,22 @@
 {
-  "counter": 11,
+  "counter": 12,
   "sessions": [
     {
-      "sid": 9,
-      "name": "ff",
+      "sid": 12,
+      "name": "456xfgdx",
       "discount_pct": 0,
-      "place_type": "ps5",
-      "comment": "вв",
+      "place_type": "table",
+      "comment": "fddfds",
       "batches": [
         {
           "count": 2,
-          "start": "2025-10-08T11:34:00",
-          "comment": "d"
+          "start": "2025-10-08T18:12:22.929124",
+          "comment": ""
         },
         {
           "count": 1,
-          "start": "2025-10-08T12:41:00",
-          "comment": "Fuck this shit"
-        },
-        {
-          "count": 3,
-          "start": "2025-10-08T15:52:37.967359",
-          "comment": "придурки"
-        }
-      ]
-    },
-    {
-      "sid": 10,
-      "name": "SubZero",
-      "discount_pct": 0,
-      "place_type": "table",
-      "comment": "",
-      "batches": [
-        {
-          "count": 2,
-          "start": "2025-10-08T15:32:00",
-          "comment": "gf"
-        }
-      ]
-    },
-    {
-      "sid": 11,
-      "name": "Вася",
-      "discount_pct": 0,
-      "place_type": "table",
-      "comment": "підори якісь",
-      "batches": [
-        {
-          "count": 2,
-          "start": "2025-10-08T15:43:00",
-          "comment": "сасв"
+          "start": "2025-10-08T18:12:27.162315",
+          "comment": "dsfsdf"
         }
       ]
     }

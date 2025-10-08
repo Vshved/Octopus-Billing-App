@@ -1,5 +1,5 @@
 # styles.py
-"""Стилі інтерфейсу"""
+"""Стилі інтерфейсу - компактна версія"""
 
 from PyQt6 import QtWidgets
 
@@ -11,32 +11,34 @@ def apply_global_style(app: QtWidgets.QApplication):
         background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
                                    stop:0 #f6f7f9, stop:1 #eef1f6); 
         font-family: 'Segoe UI', 'Helvetica Neue', Arial; 
+        font-size: 12px;
     }
     QMainWindow { background: transparent; }
     QTableWidget { 
         background: transparent; 
         border: none; 
         selection-background-color: #cfe8ff;
-        font-size: 15px;
+        font-size: 12px;
     }
     QTableWidget::item { 
-        padding: 2px;
-        font-size: 14px;
+        padding: 3px;
+        font-size: 12px;
     }
     QHeaderView::section { 
         background: #2b7cff; 
         color: white; 
-        padding: 6px; 
+        padding: 5px; 
         border: none; 
-        font-weight:600; 
+        font-weight: 600;
+        font-size: 11px;
     }
     QPushButton { 
         background: white; 
         border: 2px solid #c8d6e5; 
-        padding: 5px 2px; 
-        border-radius: 8px;
-        font-size: 13px;
-        min-height: 25px;
+        padding: 4px 8px; 
+        border-radius: 6px;
+        font-size: 12px;
+        min-height: 22px;
     }
     QPushButton:hover { background: #f0f4f8; }
     QPushButton#primary { 
@@ -55,29 +57,59 @@ def apply_global_style(app: QtWidgets.QApplication):
         border: none; 
     }
     QPushButton#danger:hover { background: #ff5252; }
-    QLabel.title { font-size: 16px; font-weight: 700; }
-    QLabel.subtitle { color: #555; }
+    QLabel.title { font-size: 14px; font-weight: 700; }
+    QLabel.subtitle { color: #555; font-size: 11px; }
 
     QLineEdit, QSpinBox, QComboBox { 
         background: white; 
         border: 1px solid #d6dde8; 
-        padding: 6px; 
-        border-radius: 6px; 
+        padding: 5px; 
+        border-radius: 5px;
+        font-size: 12px;
     }
     QLineEdit:focus, QSpinBox:focus, QComboBox:focus { 
         border: 2px solid #3b82f6; 
     }
 
-    QMenu { background: white; border: 1px solid #d6dde8; }
-    QMenu::item { padding: 8px 20px; }
+    QMenu { 
+        background: white; 
+        border: 1px solid #d6dde8;
+        font-size: 12px;
+    }
+    QMenu::item { padding: 6px 16px; }
     QMenu::item:selected { background: #e3f2fd; color: #1e293b; }
 
     QDialog { 
         background: white;
     }
     QDialog QLabel {
-        font-size: 13px;
+        font-size: 12px;
     }
-    QPlainTextEdit { background: white; border: 1px solid #d6dde8; }
+    QPlainTextEdit, QTextEdit { 
+        background: white; 
+        border: 1px solid #d6dde8;
+        font-size: 12px;
+        padding: 4px;
+    }
+    QGroupBox {
+        font-size: 12px;
+        font-weight: 600;
+        border: 1px solid #d6dde8;
+        border-radius: 5px;
+        margin-top: 8px;
+        padding-top: 8px;
+    }
+    QGroupBox::title {
+        subcontrol-origin: margin;
+        subcontrol-position: top left;
+        padding: 0 5px;
+        color: #2563eb;
+    }
+    QFormLayout {
+        spacing: 5px;
+    }
+    QStatusBar {
+        font-size: 11px;
+    }
     """
     app.setStyleSheet(style)

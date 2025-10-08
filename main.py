@@ -19,7 +19,7 @@ def main():
 
     # Збільшений шрифт для кращої читабельності
     f = app.font()
-    f.setPointSize(11)
+    f.setPointSize(10)
     app.setFont(f)
 
     w = ClubBillingApp()
