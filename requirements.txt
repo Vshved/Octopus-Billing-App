@@ -1,0 +1,5 @@
+
+# requirements.txt
+# Залежності для ClubBilling
+
+PyQt6>=6.4.0
