@@ -16,16 +16,20 @@ def apply_global_style(app: QtWidgets.QApplication):
     QMainWindow { background: transparent; }
     QTableWidget { 
         background: white; 
-        color: black;
+        color: #1e293b;
         border: none; 
         selection-background-color: #cfe8ff;
-        selection-color: black;
-        font-size: 14px;
+        selection-color:  #1e293b;;
+        font-size: 15px;
+        
+        
     }
     QTableWidget::item { 
-        padding: 10px;
-        font-size: 14px;
+        padding: 8px;
+        font-size: 15px;
         color: black;
+        border: 1px solid white; 
+         
         
         
     }
@@ -33,7 +37,7 @@ def apply_global_style(app: QtWidgets.QApplication):
         background: #2b7cff; 
         color: white; 
         padding: 5px; 
-        border: none; 
+        border: 1px solid #d6dde8; 
         font-weight: 600;
         font-size: 11px;
     }
@@ -66,18 +70,27 @@ def apply_global_style(app: QtWidgets.QApplication):
     QLabel.title { font-size: 14px; font-weight: 700; }
     QLabel.subtitle { color: #555; font-size: 11px; }
 
-    QLineEdit, QSpinBox, QComboBox { 
+    QLineEdit, QSpinBox, QComboBox, QTimeEdit { 
         background: white; 
         color: black;
         border: 1px solid #d6dde8; 
-        padding: 5px; 
-        border-radius: 5px;
-        font-size: 12px;
+        padding: 2px; 
+        border-radius: 2px;
+        font-size: 14px;
     }
-    QLineEdit:focus, QSpinBox:focus, QComboBox:focus { 
-        border: 2px solid #3b82f6; 
+    QLineEdit:focus, QSpinBox:focus, QComboBox:focus,QTimeEdit:focus  { 
+        border: 1px solid #d6dde8;  
         color: black;
+        background: white; 
+        
+     QTimeEdit::up-button, QTimeEdit::down-button {
+        background: #e5e7eb;
+        border: none;
     }
+    QTimeEdit::up-button:hover, QTimeEdit::down-button:hover {
+        background: #d1d5db;
+    }   
+    
 
     QMenu { 
         background: white; 

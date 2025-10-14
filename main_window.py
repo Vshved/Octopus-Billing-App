@@ -148,7 +148,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         self.setCentralWidget(w)
         lay = QtWidgets.QVBoxLayout(w)
         lay.setSpacing(8)
-        lay.setContentsMargins(8, 8, 8, 8)
+        lay.setContentsMargins(2, 2, 2, 2)
 
         # Верхня панель
         top_panel = QtWidgets.QHBoxLayout()
@@ -166,6 +166,8 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         self.table.setHorizontalHeaderLabels([
             "ID", "Ім'я", "Кількість", "Час початку", "Годин до сплати", "Сума", "Коментар",
             "Додати", "Редагувати", "Часткова Оплата", "Повна оплата"])
+        self.table.setShowGrid(False)  # Turn off thick gridlines
+        self.table.setAlternatingRowColors(True)  # Use alternating rows instead
 
         # Налаштування ширини колонок
         self.table.setColumnWidth(0, 80)  # ID
@@ -675,7 +677,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
     def _create_action_buttons(self, row: int, sid: int):
         """Створення кнопок дій для рядка"""
         buttons = [
-            (7, "+", "Додати людей", "#1AD95D", "#038C25", 75, 25, 25,
+            (7, "+", "Додати людей", "#1AD95D", "#038C25", None, 25, 25,
              lambda: self._add_people_by_id_and_select(sid, row)),
             (9, "🪙", "Частковий розрахунок", "#04B2D9", "#049DD9", None, 25, 20,
              lambda: self._partial_bill_by_id(sid, row)),

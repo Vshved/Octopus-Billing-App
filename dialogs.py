@@ -134,7 +134,7 @@ class EditSessionDialog(QtWidgets.QDialog):
             tm.setStyleSheet("""
                 QTimeEdit {
                     font-size: 16px;
-                    padding: 8px;
+                    padding: 2px;
                 }
             """)
             comment = QtWidgets.QLineEdit(b.comment)
@@ -343,8 +343,8 @@ class PartialBillDialog(QtWidgets.QDialog):
         self.table.setColumnWidth(2, 100)  # Оплатити зараз
         self.table.setColumnWidth(3, 120)  # Час початку
         self.table.setColumnWidth(4, 120)  # Годин нараховано
-        self.table.setColumnWidth(5, 80)  # Сума
-        self.table.setColumnWidth(6, 150)  # Коментар
+        self.table.setColumnWidth(5, 100)  # Сума
+        self.table.setColumnWidth(6, 130)  # Коментар
 
         # Висота рядків
         self.table.verticalHeader().setDefaultSectionSize(30)
@@ -356,9 +356,10 @@ class PartialBillDialog(QtWidgets.QDialog):
             QTableWidget {
                 font-size: 14px;
                 gridline-color: #e5e7eb;
+                border: 1px solid #e5e7eb;
             }
             QTableWidget::item {
-                padding: 10px;
+                padding: 2px;
             }
         """)
 
@@ -391,9 +392,10 @@ class PartialBillDialog(QtWidgets.QDialog):
         #btn_recalc.clicked.connect(self.recalc)
         btn_ok.clicked.connect(self.do_save)
         btn_cancel.clicked.connect(self.reject)
-
+        self.pay_spinboxes = []
         self.load_rows()
         self.recalc()  # Автоматично розрахувати при відкритті
+
 
     def load_rows(self):
         """Завантаження пакетів для розрахунку"""
@@ -408,6 +410,7 @@ class PartialBillDialog(QtWidgets.QDialog):
             # Номер пакету
             item_num = QtWidgets.QTableWidgetItem(f"{i}")
             item_num.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            item_num.setFlags(item_num.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)  # ADD THIS
             font = item_num.font()
             font.setPointSize(14)
             item_num.setFont(font)
@@ -416,6 +419,7 @@ class PartialBillDialog(QtWidgets.QDialog):
             # Кількість у пакеті
             item_count = QtWidgets.QTableWidgetItem(str(b.count))
             item_count.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            item_count.setFlags(item_count.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
             item_count.setFont(font)
             self.table.setItem(r, 1, item_count)
 
@@ -432,11 +436,22 @@ class PartialBillDialog(QtWidgets.QDialog):
                 }
             """)
             pay.valueChanged.connect(self.recalc)
-            self.table.setCellWidget(r, 2, pay)
+            self.pay_spinboxes.append(pay)  # ADD THIS - store reference
+
+            # CREATE CONTAINER TO CENTER THE SPINBOX
+            container = QtWidgets.QWidget()
+            layout = QtWidgets.QVBoxLayout(container)
+            layout.addWidget(pay)
+            layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)  # Center vertically
+            layout.setContentsMargins(0, 0, 0, 0)  # Remove extra padding
+
+            self.table.setCellWidget(r, 2, container)  # Use container instead of pay directly
 
             # Час старту
             item_start = QtWidgets.QTableWidgetItem(b.start.strftime("%H:%M"))
             item_start.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            item_start.setFlags(item_start.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
+            item_start.setFlags(item_start.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
             item_start.setFont(font)
             self.table.setItem(r, 3, item_start)
 
@@ -445,17 +460,20 @@ class PartialBillDialog(QtWidgets.QDialog):
             hours = ceil_to_step(minutes)
             item_hours = QtWidgets.QTableWidgetItem(str(hours))
             item_hours.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            item_hours.setFlags(item_hours.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
             item_hours.setFont(font)
             self.table.setItem(r, 4, item_hours)
 
             # Сума
             item_sum = QtWidgets.QTableWidgetItem()
             item_sum.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            item_sum.setFlags(item_sum.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
             item_sum.setFont(font)
             self.table.setItem(r, 5, item_sum)
 
             # Показуємо коментар батчу
             comment_item = QtWidgets.QTableWidgetItem(b.comment if b.comment else "—")
+            comment_item.setFlags(comment_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
             if b.comment:
                 comment_item.setForeground(QtGui.QColor("#059669"))
             self.table.setItem(r, 6, comment_item)
@@ -464,8 +482,9 @@ class PartialBillDialog(QtWidgets.QDialog):
         """Перерахунок суми"""
         total = 0
         for r, b in enumerate(self.session.batches):
-            sp: QtWidgets.QSpinBox = self.table.cellWidget(r, 2)  # type: ignore
-            pay_now = sp.value() if sp else 0
+            #sp: QtWidgets.QSpinBox = self.table.cellWidget(r, 2)  # type: ignore
+            #pay_now = sp.value() if sp else 0
+            pay_now = self.pay_spinboxes[r].value()  # USE STORED REFERENCE
             if pay_now > 0:
                 minutes = int((datetime.now() - b.start).total_seconds() // 60)
                 hours = ceil_to_step(minutes)
@@ -621,6 +640,7 @@ class FullBillDialog(QtWidgets.QDialog):
         # Завантажуємо дані
         self.load_data()
         self.resize(700, 600)
+        self.pay_spinboxes = []  # ADD THIS LINE
 
     def load_data(self):
         """Завантажує всі дані про сесію"""
