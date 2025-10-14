@@ -35,7 +35,7 @@ class AddPeopleDialog(QtWidgets.QDialog):
         self.count_spin.setMinimumWidth(200)
 
         self.comment_edit = QtWidgets.QTextEdit()
-        self.comment_edit.setPlaceholderText("Особливості, замовлення для цієї групи...")
+        self.comment_edit.setPlaceholderText("Коментар...")
         self.comment_edit.setMaximumHeight(80)
 
         form.addRow("Кількість людей:", self.count_spin)
@@ -112,7 +112,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         """Побудова меню"""
         mb = self.menuBar()
         m_menu = mb.addMenu("Меню")
-        #m_daily = mb.addMenu("Звіти")
+        m_daily = mb.addMenu("Звіти")
         m_help = mb.addMenu("Допомога")
 
         act_add = QtGui.QAction("Додати клієнта", self)
@@ -131,16 +131,29 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         act_save.setShortcut("Ctrl+S")
         act_save.triggered.connect(self.manual_save)
 
+        act_daily_report = QtGui.QAction("📊 Денний звіт", self)
+        act_daily_report.setShortcut("Ctrl+R")
+        act_daily_report.triggered.connect(self.open_daily_report)
+        m_daily.addAction(act_daily_report)
+
         m_menu.addAction(act_add)
         m_menu.addSeparator()
         m_menu.addAction(act_save)
         m_menu.addSeparator()
         m_menu.addAction(act_tariffs)
+        m_menu.addSeparator()
+        m_menu.addAction(act_daily_report)
         #m_menu.addAction(act_settings)
 
         act_shortcuts = QtGui.QAction("Клавіатурні скорочення", self)
         act_shortcuts.triggered.connect(self.show_shortcuts)
         m_help.addAction(act_shortcuts)
+
+    def open_daily_report(self):
+        """Відкрити денний звіт"""
+        from dialogs import DailyReportDialog
+        dlg = DailyReportDialog(self)
+        dlg.exec()
 
     def _build_central(self):
         """Побудова центральної частини"""
@@ -189,7 +202,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.verticalHeader().setDefaultSectionSize(50)
         self.table.verticalHeader().setVisible(False)
-        self.table.setShowGrid(True)
+        #self.table.setShowGrid(True)
         self.table.setSelectionBehavior(
             QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows
         )
@@ -283,7 +296,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
 
     def closeEvent(self, event):
         """Зберігаємо сесії при закритті"""
-        save_active_sessions(self.sessions, self.counter)
+
         reply = QtWidgets.QMessageBox.question(
             self,
             "Підтвердження виходу",
@@ -293,6 +306,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         )
 
         if reply == QtWidgets.QMessageBox.StandardButton.Yes:
+            save_active_sessions(self.sessions, self.counter)
             event.accept()  # allow closing
         else:
             event.ignore()  # cancel closing
@@ -537,6 +551,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
                 )
             self.refresh_rows()
 
+
     def _edit_by_id(self, sid: int, row: int):
         """Редагувати за ID"""
         self.table.selectRow(row)
@@ -616,6 +631,9 @@ class ClubBillingApp(QtWidgets.QMainWindow):
             id_text = f"{s.sid} {' 🎮' if s.place_type == 'ps5' else ' 🎲'}"
             id_item = QtWidgets.QTableWidgetItem(id_text)
             id_item.setData(QtCore.Qt.ItemDataRole.UserRole, s.sid)
+            font = id_item.font()
+            font.setPointSize(12)  # Set your desired size
+            id_item.setFont(font)
             self.table.setItem(r, 0, id_item)
 
             # Ім'я зі знижкою
@@ -664,6 +682,9 @@ class ClubBillingApp(QtWidgets.QMainWindow):
 
             comments_text = "\n".join(all_comments) if all_comments else ""
             comment_item = QtWidgets.QTableWidgetItem(comments_text)
+            font = comment_item.font()
+            font.setPointSize(13)  # Set your desired size
+            comment_item.setFont(font)
             comment_item.setToolTip(comments_text)  # Tooltip для довгих коментарів
             self.table.setItem(r, 6, comment_item)
 

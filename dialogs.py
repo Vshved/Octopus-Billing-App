@@ -69,7 +69,7 @@ class EditSessionDialog(QtWidgets.QDialog):
         # Стилі таблиці
         self.table.setStyleSheet("""
             QTableWidget {
-                font-size: 14px;
+                font-size: 16px;
                 gridline-color: #e5e7eb;
             }
             QTableWidget::item {
@@ -120,7 +120,7 @@ class EditSessionDialog(QtWidgets.QDialog):
             sp.setFixedHeight(50)
             sp.setStyleSheet("""
                 QSpinBox {
-                    font-size: 16px;
+                    font-size: 20px;
                     padding: 8px;
                 }
             """)
@@ -133,7 +133,7 @@ class EditSessionDialog(QtWidgets.QDialog):
             tm.setFixedHeight(50)
             tm.setStyleSheet("""
                 QTimeEdit {
-                    font-size: 16px;
+                    font-size: 20px;
                     padding: 2px;
                 }
             """)
@@ -180,7 +180,7 @@ class EditSessionDialog(QtWidgets.QDialog):
         sp.setFixedHeight(50)
         sp.setStyleSheet("""
             QSpinBox {
-                font-size: 16px;
+                font-size: 20px;
                 padding: 8px;
             }
         """)
@@ -193,7 +193,7 @@ class EditSessionDialog(QtWidgets.QDialog):
         tm.setFixedHeight(50)
         tm.setStyleSheet("""
             QTimeEdit {
-                font-size: 16px;
+                font-size: 20px;
                 padding: 8px;
             }
         """)
@@ -332,41 +332,44 @@ class PartialBillDialog(QtWidgets.QDialog):
         #    comment_label.setWordWrap(True)
         #    lay.addWidget(comment_label)
 
-        self.table = QtWidgets.QTableWidget(0, 7)
+        self.table = QtWidgets.QTableWidget(0, 8)
         self.table.setHorizontalHeaderLabels([
-            "Пакет", "К-сть", "Оплатити зараз", "Час початку", "Годин нараховано", "Сума", "Коментар"
+            "Пакет", "К-сть", "Оплатити зараз", "Початок", "Годин", "Сума з 1", "Загалом","Коментар"
         ])
 
         # Налаштування розмірів колонок
-        self.table.setColumnWidth(0, 50)  # Пакет
-        self.table.setColumnWidth(1, 100)  # К-сть у пак.
+        self.table.setColumnWidth(0, 40)  # Пакет
+        self.table.setColumnWidth(1, 50)  # К-сть у пак.
         self.table.setColumnWidth(2, 100)  # Оплатити зараз
-        self.table.setColumnWidth(3, 120)  # Час початку
-        self.table.setColumnWidth(4, 120)  # Годин нараховано
-        self.table.setColumnWidth(5, 100)  # Сума
-        self.table.setColumnWidth(6, 130)  # Коментар
+        self.table.setColumnWidth(3, 80)  # Час початку
+        self.table.setColumnWidth(4, 60)  # Годин нараховано
+        self.table.setColumnWidth(5, 100)  # Сума з 1 людини
+        self.table.setColumnWidth(6, 100)  # Загалом
+        self.table.setColumnWidth(7, 130)  # Коментар
 
         # Висота рядків
         self.table.verticalHeader().setDefaultSectionSize(30)
 
         self.table.horizontalHeader().setStretchLastSection(True)
-
+        '''
         # Стилі таблиці
         self.table.setStyleSheet("""
             QTableWidget {
-                font-size: 14px;
+                font-size: 20px;
                 gridline-color: #e5e7eb;
                 border: 1px solid #e5e7eb;
             }
             QTableWidget::item {
+                font-size: 20px;
                 padding: 2px;
             }
         """)
+        '''
 
         lay.addWidget(self.table)
 
         self.lbl_total = QtWidgets.QLabel("Сума до сплати: 0")
-        self.lbl_total.setStyleSheet("font-size: 16px; font-weight: bold; padding: 10px;")
+        #self.lbl_total.setStyleSheet("font-size: 20px; font-weight: bold; padding: 2px;")
 
         btns = QtWidgets.QHBoxLayout()
         #btn_recalc = QtWidgets.QPushButton("Розрахувати")
@@ -412,7 +415,7 @@ class PartialBillDialog(QtWidgets.QDialog):
             item_num.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             item_num.setFlags(item_num.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)  # ADD THIS
             font = item_num.font()
-            font.setPointSize(14)
+            font.setPointSize(20)
             item_num.setFont(font)
             self.table.setItem(r, 0, item_num)
 
@@ -428,11 +431,11 @@ class PartialBillDialog(QtWidgets.QDialog):
             pay.setRange(0, b.count)
             pay.setValue(0)  # За замовчуванням 0
             pay.setMinimumHeight(30)
-            pay.setFixedHeight(30)
+            pay.setFixedHeight(40)
             pay.setStyleSheet("""
                 QSpinBox {
-                    font-size: 16px;
-                    padding: 8px;
+                    font-size: 18px;
+                    padding: 2px;
                 }
             """)
             pay.valueChanged.connect(self.recalc)
@@ -464,19 +467,30 @@ class PartialBillDialog(QtWidgets.QDialog):
             item_hours.setFont(font)
             self.table.setItem(r, 4, item_hours)
 
-            # Сума
+            # Сума з 1
+            one_person_sum = QtWidgets.QTableWidgetItem()
+            one_person_sum.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            one_person_sum.setFlags(one_person_sum.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
+            one_person_sum.setFont(font)
+
+            self.table.setItem(r, 5, one_person_sum)
+
+            # Загалом
             item_sum = QtWidgets.QTableWidgetItem()
             item_sum.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             item_sum.setFlags(item_sum.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
             item_sum.setFont(font)
-            self.table.setItem(r, 5, item_sum)
+            self.table.setItem(r, 6, item_sum)
 
             # Показуємо коментар батчу
             comment_item = QtWidgets.QTableWidgetItem(b.comment if b.comment else "—")
             comment_item.setFlags(comment_item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
+            font = comment_item.font()
+            font.setPointSize(14)
+            comment_item.setFont(font)
             if b.comment:
                 comment_item.setForeground(QtGui.QColor("#059669"))
-            self.table.setItem(r, 6, comment_item)
+            self.table.setItem(r, 7, comment_item)
 
     def recalc(self):
         """Перерахунок суми"""
@@ -493,14 +507,20 @@ class PartialBillDialog(QtWidgets.QDialog):
                     self.tariffs, session_type=self.session.place_type
                 )
                 total += amount
-                item = self.table.item(r, 5)
+                one_person_amount = int(amount/pay_now)
+                item = self.table.item(r, 6)
+                person_amount = self.table.item(r,5)
                 if item:
-                    item.setText(f"{amount} грн")
+                    item.setText(f"{amount}")
+                    person_amount.setText(f"{one_person_amount}")
+
 
             else:
-                item = self.table.item(r, 5)
+                item = self.table.item(r, 6)
+                person_amount = self.table.item(r,5)
                 if item:
                     item.setText("—")
+                    person_amount.setText("—")
 
         """disc = self.session.discount_pct
         if disc:
@@ -527,17 +547,17 @@ class PartialBillDialog(QtWidgets.QDialog):
         )
         if reply != QtWidgets.QMessageBox.StandardButton.Yes:
             return
-
+        total_paid_people = 0 # Підрахунок оплачених людей
         for r, b in enumerate(list(self.session.batches)):
-            sp: QtWidgets.QSpinBox = self.table.cellWidget(r, 2)  # type: ignore
-            pay_now = sp.value() if sp else 0
+            pay_now = self.pay_spinboxes[r].value()  # ВИКОРИСТОВУЙ ЗБЕРЕЖЕНЕ ПОСИЛАННЯ
             if pay_now > 0:
+                total_paid_people += pay_now  # ДОДАЙ ЦЕЙ РЯДОК
                 b.count -= pay_now
                 if b.count <= 0:
                     self.session.batches.remove(b)
 
         save_closed_session(
-            self.session.sid, self.session.name, 0,
+            self.session.sid, self.session.name, total_paid_people,
             total, "partial", self.session.place_type
         )
 
@@ -634,7 +654,7 @@ class FullBillDialog(QtWidgets.QDialog):
         btns.addWidget(btn_close_table)
         lay.addLayout(btns)
 
-        btn_close_table.clicked.connect(self.accept)
+        btn_close_table.clicked.connect(self.do_close_and_save)
         btn_cancel.clicked.connect(self.reject)
 
         # Завантажуємо дані
@@ -674,7 +694,7 @@ class FullBillDialog(QtWidgets.QDialog):
             self.table.setItem(r, 4, comment_item)
 
             # Сума за пакет
-            amount = hourly_sum(hours*60, self.weekday, b.count, self.tariffs,
+            amount = hourly_sum(hours, self.weekday, b.count, self.tariffs,
                                 session_type=self.session.place_type)
             subtotal += amount
             self.table.setItem(r, 5, QtWidgets.QTableWidgetItem(f"{amount} грн"))
@@ -695,3 +715,221 @@ class FullBillDialog(QtWidgets.QDialog):
         #    self.lbl_discount.setStyleSheet("color: #6b7280;")
 
         self.lbl_total.setText(f"РАЗОМ ДО СПЛАТИ: {total} грн")
+
+    def do_close_and_save(self):
+            """Зберегти дані та закрити стіл"""
+            # Отримуємо фінальну суму
+            subtotal = 0
+            for b in self.session.batches:
+                minutes = int((datetime.now() - b.start).total_seconds() // 60)
+                hours = ceil_to_step(minutes)
+                amount = hourly_sum(hours * 60, self.weekday, b.count, self.tariffs,
+                                    session_type=self.session.place_type)
+                subtotal += amount
+
+            total_people = self.session.total_people()
+
+            # Зберігаємо в CSV
+            save_closed_session(
+                self.session.sid,
+                self.session.name,
+                total_people,
+                subtotal,
+                "full",  # Тип оплати - повна
+                self.session.place_type
+            )
+
+            # Закриваємо діалог
+            self.accept()
+
+class DailyReportDialog(QtWidgets.QDialog):
+            """Діалог денного звіту"""
+
+            def __init__(self, parent=None):
+                super().__init__(parent)
+                self.setWindowTitle("Денний звіт")
+                self.resize(1000, 600)
+
+                lay = QtWidgets.QVBoxLayout(self)
+
+                # Вибір дати
+                top = QtWidgets.QHBoxLayout()
+                top.addWidget(QtWidgets.QLabel("Оберіть дату:"))
+
+                self.date_edit = QtWidgets.QDateEdit()
+                self.date_edit.setCalendarPopup(True)
+                self.date_edit.setDate(QtCore.QDate.currentDate())
+                self.date_edit.setDisplayFormat("dd.MM.yyyy")
+                calendar = self.date_edit.calendarWidget()
+                calendar.setStyleSheet("""
+                    QCalendarWidget QWidget {
+                        background-color: white;
+                        color: #1e293b;
+                    }
+                    QCalendarWidget QAbstractItemView:enabled {
+                        background-color: white;
+                        color: #1e293b;
+                    }
+                    QCalendarWidget QAbstractItemView:disabled {
+                        color: #9ca3af;
+                    }
+                    QCalendarWidget QToolButton {
+                        background-color: white;
+                        color: #1e293b;
+                    }
+                    QCalendarWidget QTableView {
+                        background-color: white;
+                        color: #1e293b;
+                    }
+                """)
+                top.addWidget(self.date_edit)
+
+                btn_load = QtWidgets.QPushButton("Завантажити звіт")
+                btn_load.setObjectName("primary")
+                btn_load.clicked.connect(self.load_report)
+                top.addWidget(btn_load)
+
+                top.addStretch()
+                lay.addLayout(top)
+
+                # Таблиця звіту
+                self.table = QtWidgets.QTableWidget(0, 7)
+                self.table.setHorizontalHeaderLabels([
+                    "ID столу", "Ім'я", "Людей", "Час оплати", "Сума", "Тип оплати", "Місце"
+                ])
+                self.table.horizontalHeader().setStretchLastSection(True)
+                self.table.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
+                self.table.setAlternatingRowColors(True)
+                self.table.setStyleSheet("""
+                    QTableWidget {
+                        font-size: 12px;
+                    }
+                    QTableWidget::item {
+                        font-size: 12px;
+                        padding: 4px;
+                    }
+                    QHeaderView::section {
+                        font-size: 11px;
+                    }
+                """)
+                lay.addWidget(self.table)
+
+                # Підсумок
+                summary = QtWidgets.QGroupBox("Підсумок за день")
+                summary_lay = QtWidgets.QFormLayout()
+
+                self.lbl_total_tables = QtWidgets.QLabel("0")
+                self.lbl_total_people = QtWidgets.QLabel("0")
+                self.lbl_total_amount = QtWidgets.QLabel("0 грн")
+                self.lbl_total_amount.setStyleSheet("font-size: 16px; font-weight: bold; color: #059669;")
+
+                summary_lay.addRow("Всього столів:", self.lbl_total_tables)
+                summary_lay.addRow("Всього людей:", self.lbl_total_people)
+                summary_lay.addRow("Загальна сума:", self.lbl_total_amount)
+
+                summary.setLayout(summary_lay)
+                lay.addWidget(summary)
+
+                # Кнопка закрити
+                btn_close = QtWidgets.QPushButton("Закрити")
+                btn_close.clicked.connect(self.accept)
+                lay.addWidget(btn_close)
+
+                # Автоматично завантажити звіт при відкритті
+                self.load_report()
+
+            def load_report(self):
+                """Завантажує звіт за обрану дату"""
+                from constants import BILLS_CSV
+                import csv
+                from datetime import datetime
+
+                selected_date = self.date_edit.date().toPyDate()
+
+                if not BILLS_CSV.exists():
+                    QtWidgets.QMessageBox.information(
+                        self, "Інформація",
+                        "Файл з історією оплат не знайдено"
+                    )
+                    return
+
+                self.table.setRowCount(0)
+
+                total_tables = set()
+                total_people = 0
+                total_amount = 0
+
+                try:
+                    with BILLS_CSV.open("r", encoding="utf-8-sig") as f:
+                        reader = csv.DictReader(f)
+
+                        for row in reader:
+                            # Парсимо дату
+                            payment_time = datetime.strptime(row["when"], "%Y-%m-%d %H:%M:%S")
+
+                            # Фільтруємо по даті
+                            if payment_time.date() != selected_date:
+                                continue
+
+                            # Додаємо рядок в таблицю
+                            r = self.table.rowCount()
+                            self.table.insertRow(r)
+
+                            sid = row["id"]
+                            name = row["name"]
+                            people = int(row["people"])
+                            time_str = payment_time.strftime("%H:%M:%S")
+                            amount = int(row["amount_final"])
+                            mode = row["mode"]
+                            place_type = row.get("place_type", "table")
+
+                            # ID столу
+                            self.table.setItem(r, 0, QtWidgets.QTableWidgetItem(sid))
+
+                            # Ім'я
+                            self.table.setItem(r, 1, QtWidgets.QTableWidgetItem(name))
+
+                            # Людей
+                            item = QtWidgets.QTableWidgetItem(str(people))
+                            item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                            self.table.setItem(r, 2, item)
+
+                            # Час оплати
+                            item = QtWidgets.QTableWidgetItem(time_str)
+                            item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                            self.table.setItem(r, 3, item)
+
+                            # Сума
+                            item = QtWidgets.QTableWidgetItem(f"{amount} грн")
+                            item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+                            self.table.setItem(r, 4, item)
+
+                            # Тип оплати
+                            mode_text = {"partial": "Часткова", "one": "1 людина", "full": "Повна"}.get(mode, mode)
+                            self.table.setItem(r, 5, QtWidgets.QTableWidgetItem(mode_text))
+
+                            # Тип місця
+                            place_text = "🎮 PS5" if place_type == "ps5" else "🎲 Стіл"
+                            self.table.setItem(r, 6, QtWidgets.QTableWidgetItem(place_text))
+
+                            # Підрахунок
+                            total_tables.add(sid)
+                            total_people += people
+                            total_amount += amount
+
+                    # Оновлюємо підсумок
+                    self.lbl_total_tables.setText(str(len(total_tables)))
+                    self.lbl_total_people.setText(str(total_people))
+                    self.lbl_total_amount.setText(f"{total_amount} грн")
+
+                    if self.table.rowCount() == 0:
+                        QtWidgets.QMessageBox.information(
+                            self, "Інформація",
+                            f"За {selected_date.strftime('%d.%m.%Y')} оплат не знайдено"
+                        )
+
+                except Exception as e:
+                    QtWidgets.QMessageBox.critical(
+                        self, "Помилка",
+                        f"Помилка читання файлу звітів:\n{e}"
+                    )

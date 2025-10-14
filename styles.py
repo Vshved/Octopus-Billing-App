@@ -11,7 +11,7 @@ def apply_global_style(app: QtWidgets.QApplication):
         background: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
                                    stop:0 #f6f7f9, stop:1 #eef1f6); 
         font-family: 'Segoe UI', 'Helvetica Neue', Arial; 
-        font-size: 12px;
+        font-size: 20px;
     }
     QMainWindow { background: transparent; }
     QTableWidget { 
@@ -20,13 +20,13 @@ def apply_global_style(app: QtWidgets.QApplication):
         border: none; 
         selection-background-color: #cfe8ff;
         selection-color:  #1e293b;;
-        font-size: 15px;
+        font-size: 22px;
         
         
     }
     QTableWidget::item { 
         padding: 8px;
-        font-size: 15px;
+        font-size: 22px;
         color: black;
         border: 1px solid white; 
          
@@ -140,5 +140,46 @@ def apply_global_style(app: QtWidgets.QApplication):
         font-size: 11px;
         color: black;
     }
+     
+    QCalendarWidget {
+        background: white;
+        color: #1e293b;
+    }
+    QCalendarWidget QToolButton {
+        background: white;
+        color: #1e293b;
+        border: none;
+        padding: 5px;
+    }
+    QCalendarWidget QToolButton:hover {
+        background: #e5e7eb;
+        border-radius: 4px;
+    }
+    QCalendarWidget QMenu {
+        background: white;
+        color: #1e293b;
+    }
+    QCalendarWidget QSpinBox {
+        background: white;
+        color: #1e293b;
+        border: 1px solid #d6dde8;
+    }
+    QCalendarWidget QAbstractItemView {
+        background: white;
+        color: #1e293b;
+        selection-background-color: #3b82f6;
+        selection-color: white;
+    }
+    QCalendarWidget QAbstractItemView:enabled {
+        color: #1e293b;
+        background: white;
+    }
+    QCalendarWidget QWidget#qt_calendar_navigationbar {
+        background: white;
+    }
+    QCalendarWidget QWidget {
+        alternate-background-color: #f9fafb;
+    }
     """
     app.setStyleSheet(style)
+

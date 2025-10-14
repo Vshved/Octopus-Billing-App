@@ -49,6 +49,9 @@ def save_active_sessions(sessions: Dict[int, Session], counter: int):
         if SESSIONS_PATH.exists():
             # Створити backup старого файлу
             backup_path = SESSIONS_PATH.with_suffix('.json.old')
+            # ДОДАЙ ЦІ РЯДКИ - видали старий backup якщо існує
+            if backup_path.exists():
+                backup_path.unlink()  # Видаляємо старий .old файл
             SESSIONS_PATH.rename(backup_path)
 
         temp_path.rename(SESSIONS_PATH)
