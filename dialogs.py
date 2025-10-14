@@ -586,7 +586,7 @@ class FullBillDialog(QtWidgets.QDialog):
         info_group = QtWidgets.QGroupBox("Інформація про стіл")
         info_layout = QtWidgets.QFormLayout()
 
-        info_layout.addRow("Ім'я:", QtWidgets.QLabel(f"<b>{session.name}</b>"))
+        info_layout.addRow("Ім'я:", QtWidgets.QLabel(f"{session.name}"))
         info_layout.addRow("ID столу:", QtWidgets.QLabel(str(session.sid)))
 
         place_type = "PlayStation 5 🎮" if session.place_type == 'ps5' else "Звичайний стіл"
@@ -613,7 +613,7 @@ class FullBillDialog(QtWidgets.QDialog):
         lay.addWidget(info_group)
 
         # === ТАБЛИЦЯ БАТЧІВ ===
-        batch_group = QtWidgets.QGroupBox("Деталі по пакетах")
+        batch_group = QtWidgets.QGroupBox()
         batch_layout = QtWidgets.QVBoxLayout()
 
         self.table = QtWidgets.QTableWidget(0, 6)
@@ -626,7 +626,7 @@ class FullBillDialog(QtWidgets.QDialog):
         lay.addWidget(batch_group)
 
         # === ПІДСУМОК ===
-        summary_group = QtWidgets.QGroupBox("Підсумок")
+        summary_group = QtWidgets.QGroupBox()
         summary_layout = QtWidgets.QVBoxLayout()
 
         #self.lbl_subtotal = QtWidgets.QLabel()

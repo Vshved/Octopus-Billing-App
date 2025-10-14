@@ -95,18 +95,36 @@ def apply_global_style(app: QtWidgets.QApplication):
     QMenu { 
         background: white; 
         border: 1px solid #d6dde8;
-        font-size: 14px;
+        font-size: 10px;
         color: black;
     }
-    QMenu::item { padding: 2px 8px; }
+    QMenu::item { 
+        padding: 2px 8px;  
+        font-size: 10px; 
     QMenu::item:selected { background: white; color: black; }
-
+    QMenuBar {
+        background: transparent;
+        color: #1e293b;
+        font-size: 10px;
+        }
+    QMenuBar::item {
+        background: transparent;
+        padding: 4px 10px;
+        font-size: 10px;
+    }
+    QMenuBar::item:selected {
+        background: #e5e7eb;
+        border-radius: 4px;
+    }
+    QMenuBar::item:pressed {
+        background: #d1d5db;
+    }
     QDialog { 
         background: white;
         color: black;
     }
     QDialog QLabel {
-        font-size: 12px;
+        font-size: 10px;
         color: black;
     }
     QPlainTextEdit, QTextEdit { 

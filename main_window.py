@@ -175,24 +175,27 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         lay.addLayout(top_panel)
 
         # Таблиця
-        self.table = QtWidgets.QTableWidget(0, 11)
+        self.table = QtWidgets.QTableWidget(0, 10)
         self.table.setHorizontalHeaderLabels([
-            "ID", "Ім'я", "Кількість", "Час початку", "Годин до сплати", "Сума", "Коментар",
+            "ID", "Ім'я", "Кількість", "Годин до сплати", "Сума", "Коментар",
             "Додати", "Редагувати", "Часткова Оплата", "Повна оплата"])
         self.table.setShowGrid(False)  # Turn off thick gridlines
         self.table.setAlternatingRowColors(True)  # Use alternating rows instead
+        self.table.setTextElideMode(QtCore.Qt.TextElideMode.ElideNone)
+        self.table.setWordWrap(True)  # Включити перенос тексту
+
 
         # Налаштування ширини колонок
         self.table.setColumnWidth(0, 80)  # ID
         self.table.setColumnWidth(1, 150)  # Ім'я
         self.table.setColumnWidth(2, 60)  # К-сть
-        self.table.setColumnWidth(3, 80)  # Час
-        self.table.setColumnWidth(4, 110)  # Годин до сплати
-        self.table.setColumnWidth(5, 80)  # Сума
-        self.table.setColumnWidth(6, 150)  # Коментар
-        self.table.setColumnWidth(7, 80)  # додати
-        self.table.setColumnWidth(8, 80)  # Редагувати
-        self.table.setColumnWidth(9, 120)  # Часткова оплата
+
+        self.table.setColumnWidth(3, 110)  # Годин до сплати
+        self.table.setColumnWidth(4, 80)  # Сума
+        self.table.setColumnWidth(5, 150)  # Коментар
+        self.table.setColumnWidth(6, 80)  # додати
+        self.table.setColumnWidth(7, 80)  # Редагувати
+        self.table.setColumnWidth(8, 120)  # Часткова оплата
 
         # Кнопки матимуть авто-ширину
 
@@ -618,11 +621,15 @@ class ClubBillingApp(QtWidgets.QMainWindow):
             total_people_count += total_people
 
             if s.batches:
-                oldest = min(s.batches, key=lambda b: b.start)
-                mins = int((datetime.now() - oldest.start).total_seconds() // 60)
-                hhmm = f"{mins // 60:02d}:{mins % 60:02d}"
+                time_parts = []
+                for b in s.batches:
+                    mins = int((datetime.now() - b.start).total_seconds() // 60)
+                    hours = mins // 60
+                    minutes = mins % 60
+                    time_parts.append(f"{hours}:{minutes:02d}")
+                hhmm = "\n".join(time_parts)
             else:
-                hhmm = "00:00"
+                hhmm = "0:00"
 
             r = self.table.rowCount()
             self.table.insertRow(r)
@@ -654,14 +661,28 @@ class ClubBillingApp(QtWidgets.QMainWindow):
             total_people_item = QtWidgets.QTableWidgetItem(str(total_people))
             total_people_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
             self.table.setItem(r, 2, total_people_item)
-
+            '''
             time_item = QtWidgets.QTableWidgetItem(hhmm)
-            time_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            self.table.resizeColumnToContents(3)
+            time_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignLeft | QtCore.Qt.AlignmentFlag.AlignVCenter)
+            # ДОДАЙ ДИНАМІЧНИЙ РОЗМІР ШРИФТУ:
+            batch_count = len(s.batches)
+            if batch_count <= 2:
+                font_size = 14
+            elif batch_count <= 4:
+                font_size = 12
+            else:
+                font_size = 10
+
+            font = time_item.font()
+            font.setPointSize(font_size)
+            time_item.setFont(font)
             self.table.setItem(r, 3, time_item)
+            '''
             hours_rounded = s.get_hours()
             hours_rounded_item = QtWidgets.QTableWidgetItem(str(hours_rounded))
             hours_rounded_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            self.table.setItem(r, 4, hours_rounded_item)
+            self.table.setItem(r, 3, hours_rounded_item)
             sum_amount = s.total_amount(
                 weekday=weekday,
                 round_step=AppConfig.hour_step,
@@ -669,7 +690,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
             )
             sum_amount_item = QtWidgets.QTableWidgetItem(str(sum_amount))
             sum_amount_item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-            self.table.setItem(r, 5, sum_amount_item)
+            self.table.setItem(r, 4, sum_amount_item)
 
             # Коментар
             # Відображаємо всі коментарі (сесія + батчі)
@@ -686,7 +707,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
             font.setPointSize(13)  # Set your desired size
             comment_item.setFont(font)
             comment_item.setToolTip(comments_text)  # Tooltip для довгих коментарів
-            self.table.setItem(r, 6, comment_item)
+            self.table.setItem(r, 5, comment_item)
 
             # Кнопки дій
             self._create_action_buttons(r, s.sid)
@@ -698,13 +719,13 @@ class ClubBillingApp(QtWidgets.QMainWindow):
     def _create_action_buttons(self, row: int, sid: int):
         """Створення кнопок дій для рядка"""
         buttons = [
-            (7, "+", "Додати людей", "#1AD95D", "#038C25", None, 25, 25,
+            (6, "+", "Додати людей", "#1AD95D", "#038C25", None, 25, 25,
              lambda: self._add_people_by_id_and_select(sid, row)),
-            (9, "🪙", "Частковий розрахунок", "#04B2D9", "#049DD9", None, 25, 20,
+            (8, "🪙", "Частковий розрахунок", "#04B2D9", "#049DD9", None, 25, 20,
              lambda: self._partial_bill_by_id(sid, row)),
-            (8, "✏️", "Редагувати", "#D7F205", "#F28705", None, 25, 20,
+            (7, "✏️", "Редагувати", "#D7F205", "#F28705", None, 25, 20,
              lambda: self._edit_by_id(sid, row)),
-            (10, "💵", "Повна оплата", "#04BFBF", "#03A6A6", None, 25, 20,
+            (9, "💵", "Повна оплата", "#04BFBF", "#03A6A6", None, 25, 20,
              lambda: self._close_by_id(sid, row)),
         ]
 
@@ -736,7 +757,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         """Діалог редагування тарифів"""
         dlg = QtWidgets.QDialog(self)
         dlg.setWindowTitle("Редагування тарифів")
-        dlg.resize(700, 400)
+        dlg.resize(1000, 600)
         lay = QtWidgets.QVBoxLayout(dlg)
 
         top = QtWidgets.QHBoxLayout()

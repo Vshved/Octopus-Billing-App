@@ -1,5 +1,5 @@
 {
-  "counter": 18,
+  "counter": 20,
   "sessions": [
     {
       "sid": 17,
@@ -9,8 +9,61 @@
       "comment": "",
       "batches": [
         {
-          "count": 2,
+          "count": 1,
           "start": "2025-10-15T00:17:28.736679",
+          "comment": ""
+        },
+        {
+          "count": 1,
+          "start": "2025-10-15T00:50:20.709547",
+          "comment": ""
+        }
+      ]
+    },
+    {
+      "sid": 19,
+      "name": "чвсмм",
+      "discount_pct": 0,
+      "place_type": "table",
+      "comment": "",
+      "batches": [
+        {
+          "count": 2,
+          "start": "2025-10-15T00:28:00",
+          "comment": ""
+        },
+        {
+          "count": 1,
+          "start": "2025-10-15T00:55:00",
+          "comment": "іфуа"
+        },
+        {
+          "count": 1,
+          "start": "2025-10-15T00:55:58.869583",
+          "comment": ""
+        },
+        {
+          "count": 1,
+          "start": "2025-10-15T00:56:01.911754",
+          "comment": ""
+        },
+        {
+          "count": 1,
+          "start": "2025-10-15T00:56:04.580314",
+          "comment": ""
+        }
+      ]
+    },
+    {
+      "sid": 20,
+      "name": "фа",
+      "discount_pct": 0,
+      "place_type": "table",
+      "comment": "",
+      "batches": [
+        {
+          "count": 2,
+          "start": "2025-10-15T00:55:03.212097",
           "comment": ""
         }
       ]
