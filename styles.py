@@ -15,14 +15,19 @@ def apply_global_style(app: QtWidgets.QApplication):
     }
     QMainWindow { background: transparent; }
     QTableWidget { 
-        background: transparent; 
+        background: white; 
+        color: black;
         border: none; 
         selection-background-color: #cfe8ff;
-        font-size: 12px;
+        selection-color: black;
+        font-size: 14px;
     }
     QTableWidget::item { 
-        padding: 3px;
-        font-size: 12px;
+        padding: 10px;
+        font-size: 14px;
+        color: black;
+        
+        
     }
     QHeaderView::section { 
         background: #2b7cff; 
@@ -34,6 +39,7 @@ def apply_global_style(app: QtWidgets.QApplication):
     }
     QPushButton { 
         background: white; 
+        color: black;
         border: 2px solid #c8d6e5; 
         padding: 4px 8px; 
         border-radius: 6px;
@@ -62,6 +68,7 @@ def apply_global_style(app: QtWidgets.QApplication):
 
     QLineEdit, QSpinBox, QComboBox { 
         background: white; 
+        color: black;
         border: 1px solid #d6dde8; 
         padding: 5px; 
         border-radius: 5px;
@@ -69,27 +76,32 @@ def apply_global_style(app: QtWidgets.QApplication):
     }
     QLineEdit:focus, QSpinBox:focus, QComboBox:focus { 
         border: 2px solid #3b82f6; 
+        color: black;
     }
 
     QMenu { 
         background: white; 
         border: 1px solid #d6dde8;
-        font-size: 12px;
+        font-size: 14px;
+        color: black;
     }
-    QMenu::item { padding: 6px 16px; }
-    QMenu::item:selected { background: #e3f2fd; color: #1e293b; }
+    QMenu::item { padding: 2px 8px; }
+    QMenu::item:selected { background: white; color: black; }
 
     QDialog { 
         background: white;
+        color: black;
     }
     QDialog QLabel {
         font-size: 12px;
+        color: black;
     }
     QPlainTextEdit, QTextEdit { 
         background: white; 
         border: 1px solid #d6dde8;
         font-size: 12px;
         padding: 4px;
+        color: black;
     }
     QGroupBox {
         font-size: 12px;
@@ -98,18 +110,22 @@ def apply_global_style(app: QtWidgets.QApplication):
         border-radius: 5px;
         margin-top: 8px;
         padding-top: 8px;
+        color: black;
     }
     QGroupBox::title {
         subcontrol-origin: margin;
         subcontrol-position: top left;
         padding: 0 5px;
-        color: #2563eb;
+        
+        color: black;
     }
     QFormLayout {
         spacing: 5px;
+        color: black;
     }
     QStatusBar {
         font-size: 11px;
+        color: black;
     }
     """
     app.setStyleSheet(style)

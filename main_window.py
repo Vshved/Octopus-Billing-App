@@ -97,7 +97,6 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         self.autosave_timer.timeout.connect(self.autosave)
         self.autosave_timer.start( 60 * 1000)  # 1 хвилина
 
-        self._setup_shortcuts()
 
     def _on_selection_changed(self):
         """Зберігає ID обраного столу"""
@@ -107,18 +106,7 @@ class ClubBillingApp(QtWidgets.QMainWindow):
         else:
             self.last_selected_sid = None
 
-    def _setup_shortcuts(self):
-        """Налаштування клавіатурних скорочень"""
-        shortcuts = [
-            ("Ctrl+N", self.add_session_dialog),
-           # ("Ctrl+E", self.edit_selected_session),
-           #("Delete", self.close_selected_session),
-           #("Ctrl+P", self.settle_one_from_selected),
-            ("Ctrl+T", self.open_tariffs),
-        ]
-        for key, handler in shortcuts:
-            shortcut = QtGui.QShortcut(QtGui.QKeySequence(key), self)
-            shortcut.activated.connect(handler)
+
 
     def _build_menu(self):
         """Побудова меню"""

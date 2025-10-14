@@ -1,22 +1,22 @@
 {
-  "counter": 12,
+  "counter": 13,
   "sessions": [
     {
-      "sid": 12,
-      "name": "456xfgdx",
+      "sid": 13,
+      "name": "Ntcn",
       "discount_pct": 0,
       "place_type": "table",
-      "comment": "fddfds",
+      "comment": "",
       "batches": [
         {
           "count": 2,
-          "start": "2025-10-08T18:12:22.929124",
+          "start": "2025-10-14T18:12:00",
           "comment": ""
         },
         {
           "count": 1,
-          "start": "2025-10-08T18:12:27.162315",
-          "comment": "dsfsdf"
+          "start": "2025-10-14T19:12:00",
+          "comment": "zdcf"
         }
       ]
     }
